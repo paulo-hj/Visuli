@@ -30,13 +30,13 @@ limparaArquivo(){
 }
 
 memoriaInfo(){
-    echo "<h2>Memória:</h2>" >> visuli.html
+    echo "<h2>Memória</h2>" >> visuli.html
     free -mh >> visuli.html
     echo "<hr>" >> visuli.html
 }
 
 diskInfo(){
-    echo "<h2>Espaço em disco:</h2>" >> visuli.html
+    echo "<h2>Espaço em disco</h2>" >> visuli.html
     df -h >> visuli.html
     echo "<hr>" >> visuli.html
 }
@@ -48,14 +48,25 @@ loadAverage(){
 }
 
 usuarios(){
-    echo "<h2>Usuário logados:</h2>" >> visuli.html
+    echo "<h2>Usuário logados</h2>" >> visuli.html
     echo "<p class='userson'>Tem <b>\"$(who | wc -l)\"</b> usuários logados.</p>" >> visuli.html
     echo "<pre>$(who -s)</pre>" >> visuli.html
     echo "<hr>" >> visuli.html
 }
 
+systemInfo(){
+  . /etc/os-release
+  echo "<h2>Informações do sistema</h2>" >> visuli.html
+  echo "<b>Hostname: $(hostname)</b>" >> visuli.html
+  echo "<b>Distribuition:</b> "$PRETTY_NAME" </br>" >> visuli.html
+  echo "<b>Kernel:</b> "$(uname -r)"<br>" >> visuli.html
+  echo "<b>Uptime:</b> "$(uptime -p | sed 's/up//')"</p>" >> visuli.html
+  echo "<hr>" >> visuli.html
+}
+
 limparaArquivo
 htmlInicio
+systemInfo
 memoriaInfo
 diskInfo
 loadAverage
