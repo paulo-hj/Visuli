@@ -7,32 +7,45 @@
 
 # Configuracao
 refreshTimePage='60'
-titulo="visuli"
+titulo="Visuli"
 versao="1.0"
 
+htmlInicio(){
+    echo "<!DOCTYPE html>" >> visuli.html
+    echo "<html lang='pt-BR'>" >> visuli.html
+    echo "<head>" >> visuli.html
+    echo "<meta charset='UTF-8'>" >> visuli.html
+    echo "<meta http-equiv='refresh' content='$refreshTimePage'>" >> visuli.html
+    echo "<title>$titulo v$versao</title>" >> visuli.html
+    echo "</head>" >> visuli.html
+    echo "<body>" >> visuli.html
+}
+
+htmlFinal(){
+      echo "<body/></html>" >> visuli.html
+}
 
 memoriaInfo(){
-    echo "Memória:" >> visuli.html
+    echo "<h2>Memória:</h2>" >> visuli.html
     free -mh >> visuli.html
-    echo "" >> visuli.html
-
+    echo "<br>" >> visuli.html
 }
 
 diskInfo(){
-    echo "" >> visuli.html
-    echo "Espaço em disco:" >> visuli.html
+    echo "<h2>Espaço em disco:</h2>" >> visuli.html
     df -h >> visuli.html
-    echo "" >> visuli.html
+    echo "<br>" >> visuli.html
 }
 
 loadAverage(){
-    echo "" >> visuli.html
-    echo "Load average" >> visuli.html
+    echo "<h2>Load average</h2>" >> visuli.html
     uptime | awk -F 'load average:' '{print $2}' >> visuli.html
-    echo "" >> visuli.html
+    echo "<br>" >> visuli.html
 }
 
 
+htmlInicio
 memoriaInfo
 diskInfo
 loadAverage
+htmlFinal
