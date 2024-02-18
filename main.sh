@@ -32,19 +32,26 @@ limparaArquivo(){
 memoriaInfo(){
     echo "<h2>Memória:</h2>" >> visuli.html
     free -mh >> visuli.html
-    echo "<br>" >> visuli.html
+    echo "<hr>" >> visuli.html
 }
 
 diskInfo(){
     echo "<h2>Espaço em disco:</h2>" >> visuli.html
     df -h >> visuli.html
-    echo "<br>" >> visuli.html
+    echo "<hr>" >> visuli.html
 }
 
 loadAverage(){
     echo "<h2>Load average</h2>" >> visuli.html
     uptime | awk -F 'load average:' '{print $2}' >> visuli.html
-    echo "<br>" >> visuli.html
+    echo "<hr>" >> visuli.html
+}
+
+usuarios(){
+    echo "<h2>Usuário logados:</h2>" >> visuli.html
+    echo "<p class='userson'>Tem <b>\"$(who | wc -l)\"</b> usuários logados.</p>" >> visuli.html
+    echo "<pre>$(who -s)</pre>" >> visuli.html
+    echo "<hr>" >> visuli.html
 }
 
 limparaArquivo
@@ -52,4 +59,5 @@ htmlInicio
 memoriaInfo
 diskInfo
 loadAverage
+usuarios
 htmlFinal
