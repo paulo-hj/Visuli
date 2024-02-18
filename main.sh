@@ -11,3 +11,12 @@ titulo="visuli"
 versao="1.0"
 
 
+memoriaInfo() {
+    echo "<pre>" > visuli.html
+    echo "Memória:" >> visuli.html
+    free -mh >> visuli.html
+
+}
+
+
+memoriaInfo
