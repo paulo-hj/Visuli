@@ -22,10 +22,10 @@ htmlInicio(){
 } >> visuli.html
 
 htmlFinal(){
-      echo "<body/></html>" >> visuli.html
+    echo "<body/></html>" >> visuli.html
 }
 
-limparaArquivo(){
+limparArquivo(){
     > visuli.html
 }
 
@@ -60,29 +60,36 @@ loadAverage(){
     echo "<hr>"
 } >> visuli.html
 
-usuarios(){
-    echo "<h2>Usuário logados</h2>"
-    echo "<p class='userson'>Tem <b>\"$(who | wc -l)\"</b> usuários logados.</p>"
+logUsuarios(){
+    echo "<h2>Log de usuários</h2>"
+    echo "<p class='userson'>Tem $(who | wc -l) usuários logados.</p>"
     echo "<pre>$(who -s)</pre>"
     echo "<hr>"
 } >> visuli.html
 
 systemInfo(){
-  . /etc/os-release
-  echo "<h2>Informações do sistema</h2>"
-  echo "<b>Hostname: $(hostname)</b>"
-  echo "<b>Distribuition:</b> "$PRETTY_NAME" </br>"
-  echo "<b>Kernel:</b> "$(uname -r)"<br>"
-  echo "<b>Uptime:</b> "$(uptime -p | sed 's/up//')"</p>"
-  echo "<hr>" 
+    . /etc/os-release
+    echo "<h2>Informações do sistema</h2>"
+    echo "<b>IP:</b> $(hostname -i)<br>"
+    echo "<b>Hostname:</b> $(hostname)<br>"
+    echo "<b>Distribuição:</b> $PRETTY_NAME <br>"
+    echo "<b>Kernel:</b> $(uname -r)<br>"
+    echo "<b>Uptime:</b> $(uptime -p | sed 's/up//')<br>"
+    echo "<hr>" 
 } >> visuli.html
 
+log_size(){
+    echo "<h2>TOP 8 log size</h2>"
+    echo "<pre>$(du -hs /var/log/* | sort -hr | grep -vE '^0' | head -n 10)</pre>"
+    echo "<hr>"
+} >> visuli.html
 
-limparaArquivo
+limparArquivo
 htmlInicio
 systemInfo
 memoriaInfo
 diskInfo
 loadAverage
-usuarios
+logUsuarios
+log_size
 htmlFinal
