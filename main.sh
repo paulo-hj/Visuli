@@ -25,6 +25,10 @@ htmlFinal(){
       echo "<body/></html>" >> visuli.html
 }
 
+limparaArquivo(){
+    > visuli.html
+}
+
 memoriaInfo(){
     echo "<h2>Memória:</h2>" >> visuli.html
     free -mh >> visuli.html
@@ -43,7 +47,7 @@ loadAverage(){
     echo "<br>" >> visuli.html
 }
 
-
+limparaArquivo
 htmlInicio
 memoriaInfo
 diskInfo
