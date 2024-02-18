@@ -11,20 +11,28 @@ titulo="visuli"
 versao="1.0"
 
 
-memoriaInfo() {
-    echo "<pre>" > visuli.html
+memoriaInfo(){
     echo "Memória:" >> visuli.html
     free -mh >> visuli.html
+    echo "" >> visuli.html
 
 }
 
-diskInfo() {
+diskInfo(){
     echo "" >> visuli.html
     echo "Espaço em disco:" >> visuli.html
     df -h >> visuli.html
-    echo "</pre>" >> visuli.html
+    echo "" >> visuli.html
+}
+
+loadAverage(){
+    echo "" >> visuli.html
+    echo "Load average" >> visuli.html
+    uptime | awk -F 'load average:' '{print $2}' >> visuli.html
+    echo "" >> visuli.html
 }
 
 
 memoriaInfo
 diskInfo
+loadAverage
