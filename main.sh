@@ -18,5 +18,13 @@ memoriaInfo() {
 
 }
 
+diskInfo() {
+    echo "" >> visuli.html
+    echo "Espaço em disco:" >> visuli.html
+    df -h >> visuli.html
+    echo "</pre>" >> visuli.html
+}
+
 
 memoriaInfo
+diskInfo
