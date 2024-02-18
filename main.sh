@@ -15,7 +15,7 @@ htmlInicio(){
     echo "<html lang='pt-BR'>"
     echo "<head>"
     echo "<meta charset='UTF-8'>"
-    echo "<meta http-equiv='refresh' content='$refreshTimePage'>"
+    #echo "<meta http-equiv='refresh' content='$refreshTimePage'>"
     echo "<title>$titulo v$versao</title>"
     echo "</head>"
     echo "<body>"
@@ -31,7 +31,7 @@ limparaArquivo(){
 
 memoriaInfo(){
     echo "<h2>Memória</h2>"
-    free -mh
+    echo "<pre>$(free -mh)</pre>"
     echo "<hr>"
 } >> visuli.html
 
