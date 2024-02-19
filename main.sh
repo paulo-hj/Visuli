@@ -6,19 +6,46 @@
 #-------------------------------------------------------------------#
 
 # Configuracao
-refreshTimePage='60'
+refreshTimePage='5'
 titulo="Visuli"
 versao="1.0"
 
+cssCod(){
+    echo "
+    body {background-color: #e7edea; color: black; font-family: monospace, sans-serif; max-width: 1000px; margin: 0 auto; padding: 0 10px; font-size: 14px;}
+    h1 {color: #46685b;}
+    .linhatitulo {width: 100%; background-color: gray; padding: 0.3%;}
+    .verificaok {width: 50%; color: white; background-color: green; padding: 0.7%;}
+    .verificaproblema {width: 50%; color: black; background-color: yellow; padding: 0.7%;}
+    .verificaalerta {width: 50%; color: black; background-color: red; padding: 0.7%;}
+    pre {white-space: pre-wrap; word-wrap: break-word;}
+    hr {margin-top: 3%; margin-bottom: 3%; border-color: gray; border-style: dotted;}
+    @media only screen and (max-width: 600px) {
+        body {font-size: 13px;}
+        .portopen, .portdown, .linhatitulo, .verificaok, .verificaproblema, .verificaalerta {width: 94%; padding: 3%; margin-bottom: 3%;}
+    }
+    "
+}
+
 htmlInicio(){
-    echo "<!DOCTYPE html>"
-    echo "<html lang='pt-BR'>"
-    echo "<head>"
-    echo "<meta charset='UTF-8'>"
-    #echo "<meta http-equiv='refresh' content='$refreshTimePage'>"
-    echo "<title>$titulo v$versao</title>"
-    echo "</head>"
-    echo "<body>"
+    css="$(cssCod)"
+    echo "
+    <!DOCTYPE html>
+    <html lang='pt-BR'>
+    <head>
+        <title>$titulo $versao</title>
+        <meta charset='UTF-8'>
+        <!--<meta http-equiv='refresh' content='$refreshTimePage'> -->
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <style>
+            $css
+        </style>
+    </head>
+    <body>
+        <div id='main'>
+            <h1>$titulo - $versao</h1>
+            <p class='linhatitulo'> </p><br><br>
+    "
 } >> visuli.html
 
 htmlFinal(){
@@ -42,12 +69,12 @@ diskInfo(){
 
     echo "<h2>Disk</h2>"
 
-    if [ "$valor" -le 50 ]; then
-        echo "<p class='diskok'>BOM: $caminho com ${valor}% usado!</p>"
+    if [ "$valor" -le 70 ]; then
+        echo "<p class='verificaok'><b>Armazenamento normal:</b> $caminho com ${valor}% usado!</p>"
     elif [ "$valor" -lt 90 ]; then
-        echo "<p class='diskwarning'>ALERTA: $caminho com ${valor}% usado!</p>"
+        echo "<p class='verificaproblema'><b>Armazenamento moderado:</b> $caminho com ${valor}% usado!</p>"
     elif [ "$valor" -ge 90 ]; then
-        echo "<p class='diskdanger'>DISCO CHEIO: $caminho com ${valor}% usado!</p>"
+        echo "<p class='verificaalerta'><b>Armazenamento alto:</b> $caminho com ${valor}% usado!</p>"
     fi
 
     echo "<pre>$dicototal</pre>"
@@ -55,14 +82,24 @@ diskInfo(){
 } >> visuli.html
 
 loadAverage(){
+    load=$(uptime | awk -F 'load average:' '{print $2}')
+    load1=$(echo "$load" | awk '{print int($1)}')  # Arredondar para o inteiro mais próximo
+
     echo "<h2>Load average</h2>"
-    uptime | awk -F 'load average:' '{print $2}'
+
+    if [ "$load1" -ge 10 ]; then
+        echo "<p class='verificaalerta'><b>Processamento alto:</b> Load $load</p>"
+    elif [ "$load1" -ge 5 ]; then
+        echo "<p class='verificaproblema'><b>Processamento moderado:</b> Load $load</p>"
+    else
+        echo "<p class='verificaok'><b>Processamento normal:</b> Load $load</p>"
+    fi
     echo "<hr>"
 } >> visuli.html
 
 logUsuarios(){
     echo "<h2>Log de usuários</h2>"
-    echo "<p class='userson'>Tem $(who | wc -l) usuários logados.</p>"
+    echo "Tem $(who | wc -l) usuários logados! <br>"
     echo "<pre>$(who -s)</pre>"
     echo "<hr>"
 } >> visuli.html
@@ -75,7 +112,7 @@ systemInfo(){
     echo "<b>Distribuição:</b> $PRETTY_NAME <br>"
     echo "<b>Kernel:</b> $(uname -r)<br>"
     echo "<b>Uptime:</b> $(uptime -p | sed 's/up//')<br>"
-    echo "<hr>" 
+    echo "<hr>"
 } >> visuli.html
 
 log_size(){
