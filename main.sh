@@ -6,8 +6,11 @@
 #-------------------------------------------------------------------#
 
 # Configuracao
-refreshTimePage='5'
+refreshTimePage="5"
 versao="1.5"
+ip=$(hostname -i)
+portas="21 22 80 443 8000"
+
 
 cssCod(){
     echo "
@@ -17,15 +20,17 @@ cssCod(){
     }
     .titulo {font-size: 28px; color: #46685b;}
     .versao {font-size: 14px; color: #999; margin-left: 867px; display: block;}
-    .linhatitulo {width: 100%; background-color: gray; padding: 0.3%;}
-    .verificaok {width: 50%; color: white; background-color: green; padding: 0.7%;}
-    .verificaproblema {width: 50%; color: black; background-color: yellow; padding: 0.7%;}
-    .verificaalerta {width: 50%; color: black; background-color: red; padding: 0.7%;}
+    .linhatitulo {width: 100%; background-color: gray; padding: 0.3%; border-radius: 10px; border-radius: 4px;}
+    .verificaok {width: 49%; color: white; background-color: green; padding: 0.7%; border-radius: 4px; text-align: center;}
+    .verificaproblema {width: 49%; color: black; background-color: yellow; padding: 0.7%; border-radius: 4px; text-align: center;}
+    .verificaalerta {width: 49%; color: black; background-color: red; padding: 0.7%; border-radius: 4px; text-align: center;}
+    .portaopen {width: 49%; margin-bottom: 0.8%; padding: 0.7%; background-color: green; color: white; border-radius: 4px; text-align: center;}
+    .portadown {width: 49%; margin-bottom: 0.8%; padding: 0.7%; background-color: red; border-radius: 4px; text-align: center;}
     pre {white-space: pre-wrap; word-wrap: break-word;}
     hr {margin-top: 3%; margin-bottom: 3%; border-color: gray; border-style: dotted;}
     @media only screen and (max-width: 600px) {
         body {font-size: 13px;}
-        .portopen, .portdown, .linhatitulo, .verificaok, .verificaproblema, .verificaalerta {width: 94%; padding: 3%; margin-bottom: 3%;}
+        .portaopen, .portadown, .linhatitulo, .verificaok, .verificaproblema, .verificaalerta {width: 94%; padding: 3%; margin-bottom: 3%;}
     }"
 }
 
@@ -119,7 +124,7 @@ logUsuarios(){
 systemInfo(){
     . /etc/os-release
     echo "<h2>Informações do sistema</h2>"
-    echo "<b>IP:</b> $(hostname -i)<br>"
+    echo "<b>IP:</b> $ip<br>"
     echo "<b>Hostname:</b> $(hostname)<br>"
     echo "<b>Distribuição:</b> $PRETTY_NAME <br>"
     echo "<b>Kernel:</b> $(uname -r)<br>"
@@ -133,6 +138,19 @@ log_size(){
     echo "<hr>"
 } >> visuli.html
 
+checkPortas(){
+    echo "<h2>Portas</h2>"
+    for port in $portas; do
+        if nc -w 1 -z $ip $port 2>/dev/null; then
+            echo "<div class='portaopen'><b>$port</b> está <b>[Aberta]</b></div>"
+        else
+            echo "<div class='portadown'><b>$port</b> está <b>[Fechada]</b></div>"
+        fi
+    done
+    echo "<hr>"
+} >> visuli.html
+
+
 limparArquivo
 htmlInicio
 systemInfo
@@ -141,4 +159,5 @@ diskInfo
 loadAverage
 logUsuarios
 log_size
+checkPortas
 htmlFinal
