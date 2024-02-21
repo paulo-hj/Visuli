@@ -6,8 +6,8 @@
 #-------------------------------------------------------------------#
 
 # Configuracao
-refreshTimePage="5"
-versao="1.5"
+refreshTimePage="60"
+versao="2.0"
 ip=$(hostname -i)
 portas="21 22 80 443 8000"
 
@@ -42,7 +42,7 @@ htmlInicio(){
     <head>
         <title>Visuli $versao</title>
         <meta charset='UTF-8'>
-        <!--<meta http-equiv='refresh' content='$refreshTimePage'> -->
+        <meta http-equiv='refresh' content='$refreshTimePage'>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <style>
             $css
