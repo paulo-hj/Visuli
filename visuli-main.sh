@@ -56,28 +56,29 @@ htmlInicio(){
             </h1>
             <p class='linhatitulo'> </p><br><br>
     "
-} >> visuli.html
+} >> /var/www/html/visuli.html
 
 htmlFinal(){
     # Salva todas as linhas, exceto a última, em um novo arquivo temporário
-    head -n -1 visuli.html > temp.html
+    head -n -1 /var/www/html/visuli.html > temp.html
     # Move o arquivo temporário de volta para o arquivo original
-    mv temp.html visuli.html
+    mv temp.html /var/www/html/visuli.html
+    rm -rf temp.html
 
     echo "<br><br>
     <p class='linhatitulo'> </p><br><br><br>
-    <body/></html>" >> visuli.html
+    <body/></html>" >> /var/www/html/visuli.html
 }
 
 limparArquivo(){
-    > visuli.html
+    > /var/www/html/visuli.html
 }
 
 memoriaInfo(){
     echo "<h2>Memória</h2>"
     echo "<pre>$(free -mh)</pre>"
     echo "<hr>"
-} >> visuli.html
+} >> /var/www/html/visuli.html
 
 diskInfo(){
     caminho=$(df -h 2>/dev/null | grep '/$' | awk '{print $1}')
@@ -96,7 +97,7 @@ diskInfo(){
 
     echo "<pre>$dicototal</pre>"
     echo "<hr>"
-} >> visuli.html
+} >> /var/www/html/visuli.html
 
 loadAverage(){
     load=$(uptime | awk -F 'load average:' '{print $2}')
@@ -112,14 +113,14 @@ loadAverage(){
         echo "<p class='verificaok'><b>Processamento normal:</b> Load $load</p>"
     fi
     echo "<hr>"
-} >> visuli.html
+} >> /var/www/html/visuli.html
 
 logUsuarios(){
     echo "<h2>Log de usuários</h2>"
     echo "Tem $(who | wc -l) usuários logados! <br>"
     echo "<pre>$(who -s)</pre>"
     echo "<hr>"
-} >> visuli.html
+} >> /var/www/html/visuli.html
 
 systemInfo(){
     . /etc/os-release
@@ -130,13 +131,13 @@ systemInfo(){
     echo "<b>Kernel:</b> $(uname -r)<br>"
     echo "<b>Uptime:</b> $(uptime -p | sed 's/up//')<br>"
     echo "<hr>"
-} >> visuli.html
+} >> /var/www/html/visuli.html
 
 log_size(){
     echo "<h2>TOP 8 log size</h2>"
     echo "<pre>$(du -hs /var/log/* | sort -hr | grep -vE '^0' | head -n 10)</pre>"
     echo "<hr>"
-} >> visuli.html
+} >> /var/www/html/visuli.html
 
 checkPortas(){
     echo "<h2>Portas</h2>"
@@ -148,7 +149,7 @@ checkPortas(){
         fi
     done
     echo "<hr>"
-} >> visuli.html
+} >> /var/www/html/visuli.html
 
 
 limparArquivo
