@@ -114,3 +114,22 @@ adjusteRoutinaIntervalo() {
     echo "Intervalo da rotina ajustado com sucesso!"
 }
 
+configureFuncao() {
+    funcoes=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
+
+    echo "Selecione as funções que deseja desabilitar (separadas por espaço):"
+    for ((i = 0; i < ${#funcoes[@]}; i++)); do
+        echo "$(($i + 1)). ${funcoes[i]}"
+    done
+    read -p "Opções: " escolhas
+
+    # Verifica se as escolhas do usuário são válidas e modifica o arquivo visuli-main
+    for escolha in $escolhas; do
+        index=$(($escolha - 1))
+        if [[ $index -ge 0 && $index -lt ${#funcoes[@]} ]]; then
+            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" visuli-main
+        fi
+    done
+
+    echo "Funções configuradas com sucesso!"
+}
