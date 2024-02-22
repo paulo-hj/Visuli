@@ -28,11 +28,11 @@ installVisuli() {
     sudo sed -i '/<Directory \/var\/www\/>/ {N;N;N; a\    DirectoryIndex visuli.html
     }' /etc/apache2/apache2.conf
 
+    systemctl restart apache2
+
     # Move o script e tornar executavel
     sudo cp visuli-main.sh /usr/local/bin/
     chmod +x /usr/local/bin/visuli-main.sh
-    
-
 
     read -p "Por favor, insira o intervalo de tempo desejado para a execução da rotina (em minutos, pressione Enter para usar o padrão de 5 minutos): " tempoMinutos
 
