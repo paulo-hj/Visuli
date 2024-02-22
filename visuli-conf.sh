@@ -142,3 +142,11 @@ configurePortas() {
 
     echo "Portas configuradas com sucesso!"
 }
+
+echo "Bem-vindo ao Visuli Configuration!"
+echo "Por favor, selecione uma opção:"
+echo "1. Instalação"
+echo "2. Ajuste no intervalo da rotina"
+echo "3. Configuração de funções"
+echo "4. Configuração de portas"
+read -p "Opção: " opcao
