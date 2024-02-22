@@ -24,15 +24,15 @@ installVisuli() {
         fi
     fi
     
-    # Mover o script para /usr/local/bin/ e tornar executavel
-    sudo cp visuli-main /usr/local/bin/
-    chmod +x visuli-main
+    # Move o script e tornar executavel
+    sudo cp visuli-main.sh /usr/local/bin/
+    chmod +x /usr/local/bin/visuli-main.sh
 
     # Cria o diretório
-    sudo mkdir -p /var/www/html/visuli-main
+    #sudo mkdir -p /var/www/html/visuli-main
     
     # Configura o cron job
-    echo "*/$tempoMinutos * * * * root /usr/local/bin/visuli-main" > /etc/cron.d/visuli
+    echo "*/$tempoMinutos * * * * root /usr/local/bin/visuli-main.sh" > /etc/cron.d/visuli
     chmod +x /etc/cron.d/visuli
 
     read -p "Por favor, insira o intervalo de tempo desejado para a execução da rotina (em minutos, pressione Enter para usar o padrão de 5 minutos): " tempoMinutos
@@ -53,12 +53,12 @@ installVisuli() {
     tempoSegundos=$((tempoMinutos * 60))
 
     # Configurar o intervalo de tempo no script visuli-main
-    sed -i "s/refreshPagina=\"[0-9]*\"/refreshPagina=\"$tempoSegundos\"/" visuli-main
+    sed -i "s/refreshPagina=\"[0-9]*\"/refreshPagina=\"$tempoSegundos\"/" visuli-main.sh
 
     read -p "Por favor, insira as portas que deseja verificar se estão abertas (separadas por espaço): " portas
 
     # Modificar o arquivo visuli-main para incluir as portas a serem verificadas
-    sed -i "s/\(portas=\"\)[^\"]*/\1$portas/" visuli-main
+    sed -i "s/\(portas=\"\)[^\"]*/\1$portas/" visuli-main.sh
 
     # Lista de funções disponíveis
     funcoes=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
@@ -69,11 +69,11 @@ installVisuli() {
     done
     read -p "Opções: " escolhas
 
-    # Verifica se as escolhas do usuário são válidas e modifica o arquivo visuli-main
+    # Verifica se as escolhas do usuário são válidas e modifica o arquivo visuli-main.sh
     for escolha in $escolhas; do
         index=$(($escolha - 1))
         if [[ $index -ge 0 && $index -lt ${#funcoes[@]} ]]; then
-            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" visuli-main
+            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" visuli-main.sh
         fi
     done
 
@@ -103,11 +103,11 @@ adjusteRoutinaIntervalo() {
     # Converter o intervalo de tempo para segundos
     tempoSegundos=$((tempoMinutos * 60))
 
-    # Configurar o intervalo de tempo no script visuli-main
-    sed -i "s/refreshPagina=\"[0-9]*\"/refreshPagina=\"$tempoSegundos\"/" visuli-main
+    # Configurar o intervalo de tempo no script visuli-main.sh
+    sed -i "s/refreshPagina=\"[0-9]*\"/refreshPagina=\"$tempoSegundos\"/" visuli-main.sh
 
     # Configurar o cron job
-    echo "*/$tempoMinutos * * * * root /usr/local/bin/visuli-main" > /etc/cron.d/visuli
+    echo "*/$tempoMinutos * * * * root /usr/local/bin/visuli-main.sh" > /etc/cron.d/visuli
     chmod +x /etc/cron.d/visuli
 
     echo "Intervalo da rotina ajustado com sucesso!"
@@ -122,11 +122,11 @@ configureFuncao() {
     done
     read -p "Opções: " escolhas
 
-    # Verifica se as escolhas do usuário são válidas e modifica o arquivo visuli-main
+    # Verifica se as escolhas do usuário são válidas e modifica o arquivo visuli-main.sh
     for escolha in $escolhas; do
         index=$(($escolha - 1))
         if [[ $index -ge 0 && $index -lt ${#funcoes[@]} ]]; then
-            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" visuli-main
+            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" visuli-main.sh
         fi
     done
 
@@ -137,8 +137,8 @@ configurePortas() {
     # Solicitar ao usuário as portas que deseja verificar se estão abertas
     read -p "Por favor, insira as portas que deseja verificar se estão abertas (separadas por espaço): " portas
 
-    # Modificar o arquivo visuli-main para incluir as portas a serem verificadas
-    sed -i "s/\(portas=\"\)[^\"]*/\1$portas/" visuli-main
+    # Modificar o arquivo visuli-main.sh para incluir as portas a serem verificadas
+    sed -i "s/\(portas=\"\)[^\"]*/\1$portas/" visuli-main.sh
 
     echo "Portas configuradas com sucesso!"
 }
