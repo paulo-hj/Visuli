@@ -61,20 +61,19 @@ installVisuli() {
     chmod +x /etc/cron.d/visuli
 
     # Lista de funções disponíveis
-    functions=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
+    funcoes=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
 
-    # Solicita ao usuário que escolha as funções a serem desabilitadas
     echo "Selecione as funções que deseja desabilitar (separadas por espaço):"
-    for ((i = 0; i < ${#functions[@]}; i++)); do
-        echo "$(($i + 1)). ${functions[i]}"
+    for ((i = 0; i < ${#funcoes[@]}; i++)); do
+        echo "$(($i + 1)). ${funcoes[i]}"
     done
-    read -p "Opções: " choices
+    read -p "Opções: " escolhas
 
     # Verifica se as escolhas do usuário são válidas e modifica o arquivo visuli-main
-    for choice in $choices; do
-        index=$(($choice - 1))
-        if [[ $index -ge 0 && $index -lt ${#functions[@]} ]]; then
-            sed -i "s/${functions[index]}()/#${functions[index]}()/" visuli-main
+    for escolha in $escolhas; do
+        index=$(($escolha - 1))
+        if [[ $index -ge 0 && $index -lt ${#funcoes[@]} ]]; then
+            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" visuli-main
         fi
     done
 
@@ -132,4 +131,14 @@ configureFuncao() {
     done
 
     echo "Funções configuradas com sucesso!"
+}
+
+configurePortas() {
+    # Solicitar ao usuário as portas que deseja verificar se estão abertas
+    read -p "Por favor, insira as portas que deseja verificar se estão abertas (separadas por espaço): " portas
+
+    # Modificar o arquivo visuli-main para incluir as portas a serem verificadas
+    sed -i "s/\(portas=\"\)[^\"]*/\1$portas/" visuli-main
+
+    echo "Portas configuradas com sucesso!"
 }
