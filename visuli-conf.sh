@@ -24,7 +24,6 @@ installVisuli() {
         fi
     fi
     
-    # Solicitar ao usuário o intervalo de tempo desejado para a execução da rotina
     read -p "Por favor, insira o intervalo de tempo desejado para a execução da rotina (em minutos, pressione Enter para usar o padrão de 5 minutos): " tempoMinutos
 
     # Verificar se o valor fornecido é de fato um número
@@ -45,7 +44,6 @@ installVisuli() {
     # Configurar o intervalo de tempo no script visuli-main
     sed -i "s/refreshPagina=\"[0-9]*\"/refreshPagina=\"$tempoSegundos\"/" visuli-main
 
-    # Solicitar ao usuário as portas que deseja verificar se estão abertas
     read -p "Por favor, insira as portas que deseja verificar se estão abertas (separadas por espaço): " portas
 
     # Modificar o arquivo visuli-main para incluir as portas a serem verificadas
@@ -87,4 +85,32 @@ installVisuli() {
     echo "Instalação concluída com sucesso!"
 }
 
-installVisuli
+adjusteRoutinaIntervalo() {
+    read -p "Por favor, insira o intervalo de tempo desejado para a execução da rotina (em minutos, pressione Enter para usar o padrão de 5 minutos): " tempoMinutos
+
+    # Verificar se o valor fornecido é um número
+    re='^[0-9]+$'
+    if ! [[ $tempoMinutos =~ $re ]]; then
+        if [[ -z "$tempoMinutos" ]]; then
+            # Definir um valor padrão de 5 minutos se nenhum valor for fornecido
+            tempoMinutos=5
+            echo "Nenhum valor foi fornecido. O valor padrão de 5 minutos será utilizado."
+        else
+            echo "Erro: Por favor, insira um valor numérico para o intervalo de tempo."
+            exit 1
+        fi
+    fi
+
+    # Converter o intervalo de tempo para segundos
+    tempoSegundos=$((tempoMinutos * 60))
+
+    # Configurar o intervalo de tempo no script visuli-main
+    sed -i "s/refreshPagina=\"[0-9]*\"/refreshPagina=\"$tempoSegundos\"/" visuli-main
+
+    # Configurar o cron job
+    echo "*/$tempoMinutos * * * * root /usr/local/bin/visuli-main" > /etc/cron.d/visuli
+    chmod +x /etc/cron.d/visuli
+
+    echo "Intervalo da rotina ajustado com sucesso!"
+}
+
