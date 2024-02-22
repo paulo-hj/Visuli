@@ -76,7 +76,7 @@ installVisuli() {
     for escolha in $escolhas; do
         index=$(($escolha - 1))
         if [[ $index -ge 0 && $index -lt ${#funcoes[@]} ]]; then
-            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" visuli-main.sh
+            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" /usr/local/bin/visuli-main.sh
         fi
     done
 
@@ -129,7 +129,7 @@ configureFuncao() {
     for escolha in $escolhas; do
         index=$(($escolha - 1))
         if [[ $index -ge 0 && $index -lt ${#funcoes[@]} ]]; then
-            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" visuli-main.sh
+            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" /usr/local/bin/visuli-main.sh
         fi
     done
 
