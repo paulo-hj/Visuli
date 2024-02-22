@@ -78,8 +78,8 @@ installVisuli() {
     done
 
     # Move o arquivo de dar permissão
-    sudo cp visuli-conf /usr/local/bin/
-    chmod +x /usr/local/bin/visuli-conf
+    sudo cp visuli-conf.sh /usr/local/bin/
+    chmod +x /usr/local/bin/visuli-conf.sh
 
     echo "Instalação concluída com sucesso!"
 }
