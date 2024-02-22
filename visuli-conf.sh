@@ -24,6 +24,17 @@ installVisuli() {
         fi
     fi
     
+    # Mover o script para /usr/local/bin/ e tornar executavel
+    sudo cp visuli-main /usr/local/bin/
+    chmod +x visuli-main
+
+    # Cria o diretório
+    sudo mkdir -p /var/www/html/visuli-main
+    
+    # Configura o cron job
+    echo "*/$tempoMinutos * * * * root /usr/local/bin/visuli-main" > /etc/cron.d/visuli
+    chmod +x /etc/cron.d/visuli
+
     read -p "Por favor, insira o intervalo de tempo desejado para a execução da rotina (em minutos, pressione Enter para usar o padrão de 5 minutos): " tempoMinutos
 
     # Verificar se o valor fornecido é de fato um número
@@ -48,17 +59,6 @@ installVisuli() {
 
     # Modificar o arquivo visuli-main para incluir as portas a serem verificadas
     sed -i "s/\(portas=\"\)[^\"]*/\1$portas/" visuli-main
-
-    # Mover o script para /usr/local/bin/ e tornar exceutavel
-    sudo cp visuli-main /usr/local/bin/
-    chmod +x visuli-main
-
-    # Cria o diretório
-    sudo mkdir -p /var/www/html/visuli-main
-    
-    # Configura o cron job
-    echo "*/$tempoMinutos * * * * root /usr/local/bin/visuli-main" > /etc/cron.d/visuli
-    chmod +x /etc/cron.d/visuli
 
     # Lista de funções disponíveis
     funcoes=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
