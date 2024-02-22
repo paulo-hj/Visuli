@@ -66,21 +66,28 @@ installVisuli() {
     # Lista de funções disponíveis
     funcoes=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
 
+    # Descomentar funções
+    for ((i = 0; i < ${#funcoes[@]}; i++)); do
+        if grep -q "#${funcoes[i]}(\([^)]*\))" /usr/local/bin/visuli-main.sh; then
+            sed -i "s/#${funcoes[i]}(\([^)]*\))/${funcoes[i]}(\1)/" /usr/local/bin/visuli-main.sh
+        fi
+    done
+
     echo "Selecione as funções que deseja desabilitar (separadas por espaço):"
     for ((i = 0; i < ${#funcoes[@]}; i++)); do
         echo "$(($i + 1)). ${funcoes[i]}"
     done
     read -p "Opções: " escolhas
 
-    # Verifica se as escolhas do usuário são válidas e modifica o arquivo visuli-main.sh
+    # Comentar as funções selecionadas pelo usuário
     for escolha in $escolhas; do
         index=$(($escolha - 1))
         if [[ $index -ge 0 && $index -lt ${#funcoes[@]} ]]; then
-            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" /usr/local/bin/visuli-main.sh
+            sed -i "s/${funcoes[index]}(\([^)]*\))/#${funcoes[index]}(\1)/" /usr/local/bin/visuli-main.sh
         fi
     done
 
-    # Move o arquivo de dar permissão
+    # Move o arquivo de dar permissão   
     sudo cp visuli-conf.sh /usr/local/bin/
     chmod +x /usr/local/bin/visuli-conf.sh
 
@@ -119,17 +126,24 @@ adjusteRoutinaIntervalo() {
 configureFuncao() {
     funcoes=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
 
+    # Descomentar funções
+    for ((i = 0; i < ${#funcoes[@]}; i++)); do
+        if grep -q "#${funcoes[i]}(\([^)]*\))" /usr/local/bin/visuli-main.sh; then
+            sed -i "s/#${funcoes[i]}(\([^)]*\))/${funcoes[i]}(\1)/" /usr/local/bin/visuli-main.sh
+        fi
+    done
+
     echo "Selecione as funções que deseja desabilitar (separadas por espaço):"
     for ((i = 0; i < ${#funcoes[@]}; i++)); do
         echo "$(($i + 1)). ${funcoes[i]}"
     done
     read -p "Opções: " escolhas
 
-    # Verifica se as escolhas do usuário são válidas e modifica o arquivo visuli-main.sh
+    # Comentar as funções selecionadas pelo usuário
     for escolha in $escolhas; do
         index=$(($escolha - 1))
         if [[ $index -ge 0 && $index -lt ${#funcoes[@]} ]]; then
-            sed -i "s/${funcoes[index]}()/#${funcoes[index]}()/" /usr/local/bin/visuli-main.sh
+            sed -i "s/${funcoes[index]}(\([^)]*\))/#${funcoes[index]}(\1)/" /usr/local/bin/visuli-main.sh
         fi
     done
 
