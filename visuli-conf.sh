@@ -3,12 +3,13 @@
 installVisuli() {
     # Verificar se o Apache está instalado
     if ! command -v apache2 >/dev/null 2>&1; then
+        echo -e "____________________________________________________________\n"
         echo "O Apache não está instalado no sistema."
         read -p "Você deseja instalar o Apache agora? (s/n): " install_apache
         if [[ $install_apache == "s" || $install_apache == "S" ]]; then
             echo
             sudo apt-get update
-            sudo apt-get install apache2
+            sudo apt-get install -y apache2
         else
             echo -e "____________________________________________________________\n"
             echo -e "A instalação do Visuli foi abortada. O Apache é necessário para executar o Visuli. \n"
@@ -46,10 +47,9 @@ installVisuli() {
             echo -e "____________________________________________________________\n"
             echo "Nenhum valor foi fornecido. O valor padrão de 5 minutos será utilizado."
         else
+            tempoMinutos=5
             echo -e "____________________________________________________________\n"
-            echo "Erro: Por favor, insira um valor numérico para o intervalo de tempo."
-            echo
-            exit 1
+            echo "Valor inválido. O valor padrão de 5 minutos será utilizado."
         fi
     fi
 
@@ -66,7 +66,20 @@ installVisuli() {
     echo -e "____________________________________________________________\n"
     read -p "Por favor, insira as portas que deseja verificar se estão abertas (separadas por espaço): " portas
 
-    # Modificar o arquivo visuli-main para incluir as portas a serem verificadas
+    # Atribui valores padrão às portas se não for inserido nenhum valor pelo usuário
+    if [[ -z "$portas" ]]; then
+        portas="21 22 80 443 5432 8000"
+        echo -e "____________________________________________________________\n"
+        echo "Nenhum valor foi fornecido. As portas padrões são: 21 22 80 443 5432 8000"
+    elif [[ ! "$portas" =~ ^[0-9]+(\ [0-9]+)*$ ]]; then
+        # Verifica se o usuário inseriu portas válidas
+        portas="21 22 80 443 5432 8000"
+        echo -e "____________________________________________________________\n"
+        echo "Valor inválido. As portas padrões são: 21 22 80 443 5432 8000"
+        
+    fi
+
+    # Modifica o arquivo visuli-main.sh para incluir as portas a serem verificadas
     sed -i "s/\(portas=\"\)[^\"]*/\1$portas/" /usr/local/bin/visuli-main.sh
 
     funcoes=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
@@ -81,6 +94,16 @@ installVisuli() {
     echo
     read -p "Opções: " escolhas
 
+    opcoes=($escolhas)
+    for escolha in $escolhas; do
+        if [[ ! $escolha =~ ^[1-7]$ ]]; then
+            echo -e "____________________________________________________________\n"
+            echo "Opção inválida, não foi desabilitada nenhuma função."
+            escolhas=()
+            break
+        fi
+    done
+
     # Comenta as funções selecionadas pelo usuário
     for escolha in $escolhas; do
         index=$(($escolha + 156))
@@ -94,7 +117,8 @@ installVisuli() {
     chmod +x /usr/local/bin/visuli-conf.sh
 
     echo -e "\n----------------------------------------"
-    echo -e "Instalação concluída com sucesso!\n----------------------------------------"
+    echo -e "Instalação concluída com sucesso!\nAcesso: $(hostname -i):80"
+    echo -e "\n----------------------------------------"
     echo
     exit 0
 }
@@ -109,11 +133,12 @@ adjusteRoutinaIntervalo() {
         if [[ -z "$tempoMinutos" ]]; then
             # Definir um valor padrão de 5 minutos se nenhum valor for fornecido
             tempoMinutos=5
-            echo "\nNenhum valor foi fornecido. O valor padrão de 5 minutos será utilizado."
+            echo -e "____________________________________________________________\n"
+            echo "Nenhum valor foi fornecido. O valor padrão de 5 minutos será utilizado."
         else
-            echo -e "\nErro: Por favor, insira um valor numérico para o intervalo de tempo."
-            echo
-            exit 1
+            echo -e "____________________________________________________________\n"
+            echo -e "Erro: Por favor, insira um valor numérico para o intervalo de tempo.\n____________________________________________________________"
+            return
         fi
     fi
 
@@ -144,6 +169,15 @@ configureFuncao() {
     echo
     read -p "Opções: " escolhas
 
+    opcoes=($escolhas)
+    for escolha in $escolhas; do
+        if [[ ! $escolha =~ ^[1-7]$ ]]; then
+            echo -e "____________________________________________________________\n"
+            echo -e "Por favor, insira uma opção valida.\n____________________________________________________________"
+            return
+        fi
+    done
+
     # Comenta as funções selecionadas pelo usuário
     for escolha in $escolhas; do
         index=$(($escolha + 156))
@@ -157,16 +191,28 @@ configureFuncao() {
 }
 
 configurePortas() {
-    # Solicitar ao usuário as portas que deseja verificar se estão abertas
     echo -e "____________________________________________________________\n"
     read -p "Por favor, insira as portas que deseja verificar se estão abertas (separadas por espaço): " portas
 
-    # Modificar o arquivo visuli-main.sh para incluir as portas a serem verificadas
+    # Atribui valores padrão às portas se não for inserido nenhum valor pelo usuário
+    if [[ -z "$portas" ]]; then
+        portas="21 22 80 443 5432 8000"
+        echo -e "____________________________________________________________\n"
+        echo "\nNenhum valor foi fornecido. As portas padrões são: 21 22 80 443 5432 8000"
+    elif [[ ! "$portas" =~ ^[0-9]+(\ [0-9]+)*$ ]]; then
+        # Verifica se o usuário inseriu portas válidas
+        echo -e "____________________________________________________________\n"
+        echo -e "Por favor, insira apenas números separados por espaço para as portas.\n____________________________________________________________"
+        return
+    fi
+
+    # Modifica o arquivo visuli-main.sh para incluir as portas a serem verificadas
     sed -i "s/\(portas=\"\)[^\"]*/\1$portas/" /usr/local/bin/visuli-main.sh
 
     echo -e "\n----------------------------------------"
     echo -e "Portas configuradas com sucesso!\n----------------------------------------"
 }
+
 
 while true; do
     echo -e "\n"
