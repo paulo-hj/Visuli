@@ -12,13 +12,16 @@ installVisuli() {
             sudo apt-get update
             sudo apt-get install apache2
         else
+            echo "========================================"
             echo "A instalação do Visuli foi abortada. O Apache é necessário para executar o Visuli."
             exit 1
         fi
     else
+        echo "========================================"
         echo "O Apache já está instalado no sistema."
         read -p "Deseja continuar com a instalação do Visuli? (s/n): " continue_installation
         if [[ $continue_installation != "s" && $continue_installation != "S" ]]; then
+            echo "========================================"
             echo "A instalação do Visuli foi cancelada."
             exit 1
         fi
@@ -34,6 +37,7 @@ installVisuli() {
     sudo cp visuli-main.sh /usr/local/bin/
     chmod +x /usr/local/bin/visuli-main.sh
 
+    echo "========================================"
     read -p "Por favor, insira o intervalo de tempo desejado para a execução da rotina (em minutos, pressione Enter para usar o padrão de 5 minutos): " tempoMinutos
 
     # Verificar se o valor fornecido é de fato um número
@@ -79,7 +83,7 @@ installVisuli() {
             sed -i "${index}s/^/#/" /usr/local/bin/visuli-main.sh
         fi
     done
-    
+
     # Move o arquivo de dar permissão   
     sudo cp visuli-conf.sh /usr/local/bin/
     chmod +x /usr/local/bin/visuli-conf.sh
@@ -146,18 +150,25 @@ configurePortas() {
     echo "Portas configuradas com sucesso!"
 }
 
-echo "Bem-vindo ao Visuli!"
-echo "Por favor, selecione uma opção:"
-echo "1. Instalação"
-echo "2. Ajuste no intervalo da rotina"
-echo "3. Configuração de funções"
-echo "4. Configuração de portas"
-read -p "Opção: " opcao
+while true; do
+    echo "========================================"
+    echo "Bem-vindo ao Visuli!"
+    echo "========================================"
+    echo "Por favor, selecione uma opção:"
+    echo "1. Instalação"
+    echo "2. Ajuste no intervalo da rotina"
+    echo "3. Configuração de funções"
+    echo "4. Configuração de portas"
+    echo "0. Sair"
+    read -p "Opção: " opcao
 
-case $opcao in
-    1) installVisuli ;;
-    2) adjusteRoutinaIntervalo ;;
-    3) configureFuncao ;;
-    4) configurePortas ;;
-    *) echo "Opção inválida. Por favor, selecione uma opção válida." ;;
-esac
+    case $opcao in
+        1) installVisuli;;
+        2) adjusteRoutinaIntervalo;;
+        3) configureFuncao;;
+        4) configurePortas;;
+        0) exit 0;;
+        *) echo "Opção inválida. Por favor, selecione uma opção válida."
+            continue;;
+    esac
+done
