@@ -9,7 +9,7 @@
 refreshPagina="300"
 versao="2.5"
 ip=$(hostname -i)
-portas="21 22 80 443 8000"
+portas="21 22 80 443 5432 8000"
 
 
 cssCod(){
@@ -19,7 +19,7 @@ cssCod(){
     color: #46685b; text-align: center; margin-top: 0; padding: 35px 20px 0;
     }
     .titulo {font-size: 28px; color: #46685b;}
-    .versao {font-size: 14px; color: #999; margin-left: 867px; display: block;}
+    .versao {font-size: 14px; color: #999; margin-left: 867px; display: block; margin-left: 50%; transform: translateX(-50%);}
     .linhatitulo {width: 100%; background-color: gray; padding: 0.3%; border-radius: 10px; border-radius: 4px;}
     .verificaok {width: 49%; color: white; background-color: green; padding: 0.7%; border-radius: 4px; text-align: center;}
     .verificaproblema {width: 49%; color: black; background-color: yellow; padding: 0.7%; border-radius: 4px; text-align: center;}
@@ -30,7 +30,7 @@ cssCod(){
     hr {margin-top: 3%; margin-bottom: 3%; border-color: gray; border-style: dotted;}
     @media only screen and (max-width: 600px) {
         body {font-size: 13px;}
-        .portaopen, .portadown, .linhatitulo, .verificaok, .verificaproblema, .verificaalerta {width: 94%; padding: 3%; margin-bottom: 3%;}
+        .portaopen, .portadown, .linhatitulo, .verificaok, .verificaproblema, .verificaalerta, .versao {width: 94%; padding: 3%; margin-bottom: 3%;}
     }"
 }
 
@@ -52,7 +52,7 @@ htmlInicio(){
         <div id='main'>
             <h1>
                 <span class="titulo">Visuli</span>
-                <span class="versao">Versão: $versao</span>
+                <span class="versao">ver. $versao</span>
             </h1>
             <p class='linhatitulo'> </p><br><br>
     "
