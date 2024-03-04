@@ -218,8 +218,15 @@ configurePortas() {
 }
 
 executarVisuli() {
-    /usr/local/bin/visuli-main.sh
+    if [ -f "/usr/local/bin/visuli-main.sh" ]; then
+        /usr/local/bin/visuli-main.sh
+        echo -e "\n----------------------------------------"
+        echo -e "Visuli executado com sucesso!\n----------------------------------------"
+    else
+        echo "Por favor, instale o Visuli antes de executá-lo."
+    fi
 }
+
 
 while true; do
     echo -e "\n"
