@@ -217,6 +217,9 @@ configurePortas() {
     echo -e "Portas configuradas com sucesso!\n----------------------------------------"
 }
 
+executarVisuli() {
+    /usr/local/bin/visuli-main.sh
+}
 
 while true; do
     echo -e "\n"
@@ -228,6 +231,7 @@ while true; do
     echo "2. Ajuste no intervalo da rotina"
     echo "3. Configuração de funções"
     echo "4. Configuração de portas"
+    echo "5. Executar"
     echo -e "0. Sair\n"
     read -p "Opção: " opcao
 
@@ -236,6 +240,7 @@ while true; do
         2) adjusteRoutinaIntervalo;;
         3) configureFuncao;;
         4) configurePortas;;
+        5) executarVisuli;;
         0) echo
             echo -e "----------------------------------------\nSaindo..."
             echo -e "----------------------------------------\n"
