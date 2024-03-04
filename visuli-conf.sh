@@ -1,9 +1,13 @@
 #!/bin/bash
 
+linha() {
+    echo -e "____________________________________________________________\n"
+}
+
 installVisuli() {
     # Verificar se o Apache está instalado
     if ! command -v apache2 >/dev/null 2>&1; then
-        echo -e "____________________________________________________________\n"
+        linha
         echo "O Apache não está instalado no sistema."
         read -p "Você deseja instalar o Apache agora? (s/n): " install_apache
         if [[ $install_apache == "s" || $install_apache == "S" ]]; then
@@ -11,16 +15,16 @@ installVisuli() {
             sudo apt-get update
             sudo apt-get install -y apache2
         else
-            echo -e "____________________________________________________________\n"
+            linha
             echo -e "A instalação do Visuli foi abortada. O Apache é necessário para executar o Visuli. \n"
             exit 1
         fi
     else
-        echo -e "____________________________________________________________\n"
+        linha
         echo "O Apache já está instalado no sistema."
         read -p "Deseja continuar com a instalação do Visuli? (s/n): " continue_installation
         if [[ $continue_installation != "s" && $continue_installation != "S" ]]; then
-            echo -e "____________________________________________________________\n"
+            linha
             echo -e "A instalação do Visuli foi cancelada.\n"
             exit 1
         fi
@@ -36,7 +40,7 @@ installVisuli() {
     sudo cp visuli-main.sh /usr/local/bin/
     chmod +x /usr/local/bin/visuli-main.sh
 
-    echo -e "____________________________________________________________\n"
+    linha
     read -p "Por favor, insira o intervalo de tempo desejado para a execução da rotina (em minutos, pressione Enter para usar o padrão de 5 minutos): " tempoMinutos
 
     # Verificar se o valor fornecido é de fato um número
@@ -44,11 +48,11 @@ installVisuli() {
     if ! [[ $tempoMinutos =~ $re ]]; then
         if [[ -z "$tempoMinutos" ]]; then
             tempoMinutos=5
-            echo -e "____________________________________________________________\n"
+            linha
             echo "Nenhum valor foi fornecido. O valor padrão de 5 minutos será utilizado."
         else
             tempoMinutos=5
-            echo -e "____________________________________________________________\n"
+            linha
             echo "Valor inválido. O valor padrão de 5 minutos será utilizado."
         fi
     fi
@@ -63,18 +67,18 @@ installVisuli() {
     # Configurar o intervalo de tempo no script visuli-main
     sed -i "s/refreshPagina=\"[0-9]*\"/refreshPagina=\"$tempoSegundos\"/" /usr/local/bin/visuli-main.sh
 
-    echo -e "____________________________________________________________\n"
+    linha
     read -p "Por favor, insira as portas que deseja verificar se estão abertas (separadas por espaço): " portas
 
     # Atribui valores padrão às portas se não for inserido nenhum valor pelo usuário
     if [[ -z "$portas" ]]; then
         portas="21 22 80 443 5432 8000"
-        echo -e "____________________________________________________________\n"
+        linha
         echo "Nenhum valor foi fornecido. As portas padrões são: 21 22 80 443 5432 8000"
     elif [[ ! "$portas" =~ ^[0-9]+(\ [0-9]+)*$ ]]; then
         # Verifica se o usuário inseriu portas válidas
         portas="21 22 80 443 5432 8000"
-        echo -e "____________________________________________________________\n"
+        linha
         echo "Valor inválido. As portas padrões são: 21 22 80 443 5432 8000"
         
     fi
@@ -85,7 +89,7 @@ installVisuli() {
     funcoes=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
 
     sed -i '157,163s/^#//' /usr/local/bin/visuli-main.sh
-    echo -e "____________________________________________________________\n"
+    linha
     echo "Selecione as funções que deseja desabilitar (separadas por espaço):"
     echo
     for ((i = 0; i < ${#funcoes[@]}; i++)); do
@@ -97,7 +101,7 @@ installVisuli() {
     opcoes=($escolhas)
     for escolha in $escolhas; do
         if [[ ! $escolha =~ ^[1-7]$ ]]; then
-            echo -e "____________________________________________________________\n"
+            linha
             echo "Opção inválida, não foi desabilitada nenhuma função."
             escolhas=()
             break
@@ -124,7 +128,7 @@ installVisuli() {
 }
 
 adjusteRoutinaIntervalo() {
-    echo -e "____________________________________________________________\n"
+    linha
     read -p "Por favor, insira o intervalo de tempo desejado para a execução da rotina (em minutos, pressione Enter para usar o padrão de 5 minutos): " tempoMinutos
 
     # Verificar se o valor fornecido é um número
@@ -133,10 +137,10 @@ adjusteRoutinaIntervalo() {
         if [[ -z "$tempoMinutos" ]]; then
             # Definir um valor padrão de 5 minutos se nenhum valor for fornecido
             tempoMinutos=5
-            echo -e "____________________________________________________________\n"
+            linha
             echo "Nenhum valor foi fornecido. O valor padrão de 5 minutos será utilizado."
         else
-            echo -e "____________________________________________________________\n"
+            linha
             echo -e "Erro: Por favor, insira um valor numérico para o intervalo de tempo.\n____________________________________________________________"
             return
         fi
@@ -160,7 +164,7 @@ configureFuncao() {
     funcoes=("systemInfo" "memoriaInfo" "diskInfo" "loadAverage" "logUsuarios" "log_size" "checkPortas")
 
     sed -i '157,163s/^#//' /usr/local/bin/visuli-main.sh
-    echo -e "____________________________________________________________\n"
+    linha
     echo "Selecione as funções que deseja desabilitar (separadas por espaço):"
     echo
     for ((i = 0; i < ${#funcoes[@]}; i++)); do
@@ -172,7 +176,7 @@ configureFuncao() {
     opcoes=($escolhas)
     for escolha in $escolhas; do
         if [[ ! $escolha =~ ^[1-7]$ ]]; then
-            echo -e "____________________________________________________________\n"
+            linha
             echo -e "Por favor, insira uma opção valida.\n____________________________________________________________"
             return
         fi
@@ -191,17 +195,17 @@ configureFuncao() {
 }
 
 configurePortas() {
-    echo -e "____________________________________________________________\n"
+    linha
     read -p "Por favor, insira as portas que deseja verificar se estão abertas (separadas por espaço): " portas
 
     # Atribui valores padrão às portas se não for inserido nenhum valor pelo usuário
     if [[ -z "$portas" ]]; then
         portas="21 22 80 443 5432 8000"
-        echo -e "____________________________________________________________\n"
+        linha
         echo "\nNenhum valor foi fornecido. As portas padrões são: 21 22 80 443 5432 8000"
     elif [[ ! "$portas" =~ ^[0-9]+(\ [0-9]+)*$ ]]; then
         # Verifica se o usuário inseriu portas válidas
-        echo -e "____________________________________________________________\n"
+        linha
         echo -e "Por favor, insira apenas números separados por espaço para as portas.\n____________________________________________________________"
         return
     fi
