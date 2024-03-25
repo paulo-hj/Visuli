@@ -1,10 +1,11 @@
-# Visuli
-### Uma solução simples para administradores de sistemas que desejam monitorar seus servidores de forma eficaz, sem a necessidade de compartilhar credenciais de acesso.
-#
+<h1 align="center">Visuli</h1>
 
-## Funcionalidades
+#### Uma solução simples para administradores de sistemas que desejam monitorar seus servidores de forma eficaz, sem a necessidade de compartilhar credenciais de acesso.
 
-Atualmente é possível monitorar os seguintes itens:
+## 
+### <ins>Funcionalidades</ins>
+
+Atualmente, o Visuli oferece funcionalidades que permitem monitorar e obter dados sobre o estado do servidor. Algumas das principais funcionalidades incluem:
 
 - Memória
 - Disco
@@ -14,14 +15,39 @@ Atualmente é possível monitorar os seguintes itens:
 - Portas
 - Log de usuário
 
-## Nota
-Visuli não funciona com mais de um servidor, foi criado desta forma para monitoramento simples e de fácil manipu. Talvez no futuro possamos adicionar suporte para monitorar mais de um servidor.
+## 
+### <ins>Nota</ins>
+O Visuli atualmente suporta monitoramento para um único servidor, visando simplicidade e facilidade de uso. Possíveis atualizações futuras podem incluir suporte para múltiplos servidores.
 
-
+- Exemplo 1:
 ![2024-03-24_17-21](https://github.com/paulo-hj/Visuli/assets/95994249/35765c23-cffe-4efa-81e9-3c4237790ba2)
 
+- Exemplo 2:
 ![2024-03-24_17-22](https://github.com/paulo-hj/Visuli/assets/95994249/b6685f58-622c-467a-8760-50df90810c21)
 
-#### Modo responsivo
+- Exemplo modo responsivo:
+  
+  ![cel](https://github.com/paulo-hj/Visuli/assets/95994249/ab9c0ad1-0466-4616-b424-133472d7454b)
 
-![831c66fb-f99c-47c8-91b9-aa86a08eb123](https://github.com/paulo-hj/Visuli/assets/95994249/acaa21e2-67d1-4555-ba8e-3fff166f3f18)
+## 
+### <ins>Instalação</ins>
+
+#### 1. Clonar repositório:
+```
+git clone https://github.com/paulo-hj/Visuli
+```
+
+#### 2. Acessar o repositório e dar permissão de execução aos scripts:
+```
+cd Visuli && chmod +x visuli-conf.sh visuli-main.sh
+```
+
+#### 3. Executar script de instalação:
+```
+./visuli-conf.sh
+```
+
+## 
+O Visuli traz um script para facilitar a instalação e alteração das configurações, como, por exemplo, alteração do tempo da rotina no Cron, portas que devem ser verificadas e funcionalidades ativas.
+
+- Exemplos:
