@@ -44,10 +44,12 @@ cd Visuli && chmod +x visuli-conf.sh visuli-main.sh
 
 #### 3. Executar script de instalação:
 ```
-./visuli-conf.sh
+sudo ./visuli-conf.sh
 ```
 
 ## 
 O Visuli traz um script para facilitar a instalação e alteração das configurações, como, por exemplo, alteração do tempo da rotina no Cron, portas que devem ser verificadas e funcionalidades ativas.
 
 - Exemplos:
+![image](https://github.com/paulo-hj/Visuli/assets/95994249/c333622e-6463-47f7-81c2-9a6da0b1f3fa)
+![image](https://github.com/paulo-hj/Visuli/assets/95994249/6484e26e-c090-4b30-87b5-f2d02985d7c1)
