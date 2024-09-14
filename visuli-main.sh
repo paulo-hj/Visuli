@@ -8,9 +8,9 @@
 # Configuracao
 refreshPagina="300"
 versao="2.5"
-ip=$(hostname -i)
+#ip=$(hostname -i)
+ip=$(ip -4 addr show | grep 'state UP' -A2 | grep inet | awk '{print $2}' | cut -d'/' -f1)
 portas="21 22 80 443 5432 8000"
-
 
 cssCod(){
     echo "
