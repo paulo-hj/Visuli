@@ -121,7 +121,7 @@ installVisuli() {
     chmod +x /usr/local/bin/visuli-conf.sh
 
     echo -e "\n----------------------------------------"
-    echo -e "Instalação concluída com sucesso!\nAcesso: $(hostname -i):80"
+    echo -e "Instalação concluída com sucesso!\nAcesso: $(ip -4 addr show | grep 'state UP' -A2 | grep inet | awk '{print $2}' | cut -d'/' -f1):80"
     echo -e "\n----------------------------------------"
     echo
     exit 0
